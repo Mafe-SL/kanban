@@ -7,6 +7,8 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import taskApi from '../../api/taskApi'
 
 import '../../css/custom-editor.css'
+import { uploadFile } from '../../firebase/config'
+import { upload } from '@testing-library/user-event/dist/upload'
 
 const modalStyle = {
   outline: 'none',
@@ -85,26 +87,46 @@ const TaskModal = props => {
     props.onUpdate(task)
   }
 
-  const updateContent = async (event, editor) => {
-    clearTimeout(timer)
-    const data = editor.getData()
-
-    console.log({ isModalClosed })
-
+  const updateContent = async (event, editor, imageUrl) => {
+    clearTimeout(timer);
+    let data = editor.getData();
+  
+    if (imageUrl) {
+      // Insertar la URL de la imagen en el contenido del editor
+      const imageHtml = `<img src="${imageUrl}" />`;
+  const position = editor.model.document.selection.getFirstPosition();
+  editor.model.insertContent(imageHtml, position);
+    }
+  
+    console.log({ isModalClosed });
+  
     if (!isModalClosed) {
       timer = setTimeout(async () => {
         try {
-          await taskApi.update(boardId, task.id, { content: data })
+          await taskApi.update(boardId, task.id, { content: data });
         } catch (err) {
-          alert(err)
+          alert(err);
         }
       }, timeout);
-
-      task.content = data
-      setContent(data)
-      props.onUpdate(task)
+  
+      task.content = data;
+      setContent(data);
+      console.log(data);
+      props.onUpdate(task);
     }
-  }
+  };
+  
+  const [file, setFile] = useState(null);
+  
+  const handleSubmit = async (e, editor) => {
+    e.preventDefault();
+    try {
+      const result = await uploadFile(file);
+      updateContent(null, editor, result); // Pasar la URL de la imagen a updateContent
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <Modal
@@ -165,7 +187,16 @@ const TaskModal = props => {
                 onChange={updateContent}
                 onFocus={updateEditorHeight}
                 onBlur={updateEditorHeight}
+                onUpload={(event, editor) => handleSubmit(event, editor)}
               />
+              {/* <form onSubmit={handleSubmit}>
+                <input type="file" name="" id="" onChange={e => setFile(e.target.files[0])} />
+                <button>subir</button>
+              </form> */}
+              <input
+    type="file"
+    onChange={(e) => setFile(e.target.files[0])}
+  />
             </Box>
           </Box>
         </Box>
