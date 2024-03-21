@@ -12,6 +12,7 @@ import Home from './pages/Home'
 import Board from './pages/Board'
 import Signup from './pages/Signup'
 import Login from './pages/Login'
+import { AuthProvider } from './context/authContext'
 
 function App() {
   const theme = createTheme({
@@ -21,6 +22,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseLine />
+      <AuthProvider>
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<AuthLayout />}>
@@ -34,6 +36,7 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
+      </AuthProvider>
     </ThemeProvider>
   );
 }

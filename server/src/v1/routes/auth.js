@@ -47,4 +47,6 @@ router.post(
   }
 )
 
+router.post('/firebase-signup', userController.firebaseSignup);
+
 module.exports = router
