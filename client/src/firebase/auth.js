@@ -14,9 +14,14 @@ export const doCreateUserWithEmailAndPassword = async (email, password) => {
 
 export const doSignInWithEmailAndPassword = async (email, password) => {
   try {
-    await signInWithEmailAndPassword(auth, email, password);
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    return userCredential;
   } catch (error) {
-    throw error; // Lanzar el error para poder manejarlo en el componente Login.jsx
+    throw error;
   }
 };
 

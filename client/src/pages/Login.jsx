@@ -9,6 +9,8 @@ import {
 } from "../firebase/auth";
 import { useAuth } from "../context/authContext";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const { userLoggedIn } = useAuth();
@@ -82,12 +84,15 @@ const Login = () => {
       setLoading(true);
       try {
         // Inicia sesión con Firebase
-        const { user } = await doSignInWithEmailAndPassword(email, password);
+        const userCredential = await doSignInWithEmailAndPassword(
+          email,
+          password
+        );
 
         // Envía los datos del usuario a la API del servidor
         const res = await axios.post("/api/v1/auth/firebase-signup", {
-          email: user.email,
-          uid: user.uid,
+          email: userCredential.user.email,
+          uid: userCredential.user.uid,
         });
 
         // Almacena el token devuelto en el localStorage
@@ -96,12 +101,15 @@ const Login = () => {
         navigate("/"); // Redirige al usuario a la página de inicio
       } catch (error) {
         setLoading(false);
-        console.error("Error al iniciar sesión:", error);
+        toast.error("Error al iniciar sesión:", error);
         if (error.code === "auth/user-not-found") {
+          toast.error("Correo no registrado.");
           setEmailError("Correo electrónico no registrado.");
         } else if (error.code === "auth/wrong-password") {
+          toast.error("Contraseña incorrecta.");
           setEmailError("Contraseña incorrecta.");
         } else {
+          toast.error("Error al iniciar sesión. Inténtalo de nuevo más tarde.");
           setEmailError(
             "Error al iniciar sesión. Inténtalo de nuevo más tarde."
           );
@@ -122,6 +130,7 @@ const Login = () => {
 
   return (
     <>
+    <ToastContainer/>
       <Box component="form" sx={{ mt: 1 }} onSubmit={handleSubmit} noValidate>
         <TextField
           margin="normal"
@@ -154,10 +163,10 @@ const Login = () => {
           type="submit"
           loading={loading}
         >
-          Login
+          Iniciar Sesión
         </LoadingButton>
       </Box>
-      <Box component="form" onSubmit={handleFirebaseLogin} noValidate>
+      {/* <Box component="form" onSubmit={handleFirebaseLogin} noValidate>
         <TextField
           margin="normal"
           required
@@ -204,9 +213,9 @@ const Login = () => {
         >
           Iniciar sesión con Google
         </Button>
-      </Box>
+      </Box> */}
       <Button component={Link} to="/signup" sx={{ textTransform: "none" }}>
-        Don't have an account? Signup
+        Regístrate
       </Button>
     </>
   );

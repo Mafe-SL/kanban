@@ -127,10 +127,10 @@ const Kanban = props => {
         justifyContent: 'space-between'
       }}>
         <Button onClick={createSection}>
-          Add section
+          Nueva Columna
         </Button>
         <Typography variant='body2' fontWeight='700'>
-          {data.length} Sections
+          {data.length} Columnas
         </Typography>
       </Box>
       <Divider sx={{ margin: '10px 0' }} />
