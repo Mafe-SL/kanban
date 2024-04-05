@@ -36,12 +36,12 @@ const Login = () => {
 
     if (username === "") {
       err = true;
-      setUsernameErrText("Please fill this field");
+      setUsernameErrText("Este campo está vacío");
     }
 
     if (password === "") {
       err = true;
-      setPasswordErrText("Please fill this field");
+      setPasswordErrText("Este campo está vacío");
     }
 
     if (err) return;
@@ -137,7 +137,7 @@ const Login = () => {
           required
           fullWidth
           id="username"
-          label="Username"
+          label="Usuario"
           name="username"
           disabled={loading}
           error={usernameErrText !== ""}
@@ -148,7 +148,7 @@ const Login = () => {
           required
           fullWidth
           id="password"
-          label="Password"
+          label="Contraseña"
           name="password"
           type="password"
           disabled={loading}

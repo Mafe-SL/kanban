@@ -37,7 +37,7 @@ const Home = () => {
         onClick={createBoard}
         loading={loading}
       >
-        Click here to create your first board
+        Haz click aquí para crear tu primer tablero
       </LoadingButton>
     </Box>
   )

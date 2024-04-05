@@ -27,19 +27,19 @@ const Signup = () => {
 
     if (username === '') {
       err = true
-      setUsernameErrText('Please fill this field')
+      setUsernameErrText('Este campo está vacío')
     }
     if (password === '') {
       err = true
-      setPasswordErrText('Please fill this field')
+      setPasswordErrText('Este campo está vacío')
     }
     if (confirmPassword === '') {
       err = true
-      setConfirmPasswordErrText('Please fill this field')
+      setConfirmPasswordErrText('Este campo está vacío')
     }
     if (password !== confirmPassword) {
       err = true
-      setConfirmPasswordErrText('Confirm password not match')
+      setConfirmPasswordErrText('La confirmación de contraseña no coincide')
     }
 
     if (err) return
@@ -83,7 +83,7 @@ const Signup = () => {
           required
           fullWidth
           id='username'
-          label='Username'
+          label='Usuario'
           name='username'
           disabled={loading}
           error={usernameErrText !== ''}
@@ -94,7 +94,7 @@ const Signup = () => {
           required
           fullWidth
           id='password'
-          label='Password'
+          label='Contraseña'
           name='password'
           type='password'
           disabled={loading}
@@ -106,7 +106,7 @@ const Signup = () => {
           required
           fullWidth
           id='confirmPassword'
-          label='Confirm Password'
+          label='Confirmación de contraseña'
           name='confirmPassword'
           type='password'
           disabled={loading}
@@ -121,7 +121,7 @@ const Signup = () => {
           type='submit'
           loading={loading}
         >
-          Signup
+          Registrarse
         </LoadingButton>
       </Box>
       <Button
@@ -129,7 +129,7 @@ const Signup = () => {
         to='/login'
         sx={{ textTransform: 'none' }}
       >
-        Already have an account? Login
+        ¿Ya tienes una cuenta? Iniciar Sesión
       </Button>
     </>
   )
